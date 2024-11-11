@@ -853,10 +853,26 @@ public:
       return AArch64::LDURDi;
     case AArch64::STPXi:
       return AArch64::LDPXi;
+    case AArch64::STPWpre:
+      return AArch64::LDPWpre;
     case AArch64::STPXpre:
       return AArch64::LDPXpre;
+    case AArch64::STPSpre:
+      return AArch64::LDPSpre;
+    case AArch64::STPDpre:
+      return AArch64::LDPDpre;
+    case AArch64::STPQpre:
+      return AArch64::LDPQpre;
+    case AArch64::STPWpost:
+      return AArch64::LDPWpost;
     case AArch64::STPXpost:
       return AArch64::LDPXpost;
+    case AArch64::STPSpost:
+      return AArch64::LDPSpost;
+    case AArch64::STPDpost:
+      return AArch64::LDPDpost;
+    case AArch64::STPQpost:
+      return AArch64::LDPQpost;
     case AArch64::STRBBroX:
       return AArch64::LDRBBroX;
     case AArch64::STRBBui:
@@ -875,6 +891,36 @@ public:
       return AArch64::LDRBBpre;
     case AArch64::STURBBi:
       return AArch64::LDURBBi;
+    case AArch64::STRBpost:
+      return AArch64::LDRBpost;
+    case AArch64::STRHHpost:
+      return AArch64::LDRHHpost;
+    case AArch64::STRHpost:
+      return AArch64::LDRHpost;
+    case AArch64::STRSpost:
+      return AArch64::LDRSpost;
+    case AArch64::STRDpost:
+      return AArch64::LDRDpost;
+    case AArch64::STRQpost:
+      return AArch64::LDRQpost;
+    case AArch64::STRXpost:
+      return AArch64::LDRXpost;
+    case AArch64::STRBpre:
+      return AArch64::LDRBpre;
+    case AArch64::STRHHpre:
+      return AArch64::LDRHHpre;
+    case AArch64::STRHpre:
+      return AArch64::LDRHpre;
+    case AArch64::STRWpre:
+      return AArch64::LDRWpre;
+    case AArch64::STRXpre:
+      return AArch64::LDRXpre;
+    case AArch64::STRSpre:
+      return AArch64::LDRSpre;
+    case AArch64::STRDpre:
+      return AArch64::LDRDpre;
+    case AArch64::STRQpre:
+      return AArch64::LDRQpre;
     default:
       return stOpcode;
     }
