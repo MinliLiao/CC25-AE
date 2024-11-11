@@ -51,31 +51,31 @@ public:
   int numMasterRegs = 14;
   int masterRegs[14] = {AArch64::X0,  AArch64::X1,  AArch64::X2,  AArch64::X3,
                         AArch64::X4,  AArch64::X5,  AArch64::X19, AArch64::X20,
-                        AArch64::X23, AArch64::X24, AArch64::X28, AArch64::FP,
+                        AArch64::X7, AArch64::X6, AArch64::X8, AArch64::FP,
                         AArch64::LR,  AArch64::SP};
   int masterRegsW[14] = {AArch64::W0,  AArch64::W1,  AArch64::W2,  AArch64::W3,
                          AArch64::W4,  AArch64::W5,  AArch64::W19, AArch64::W20,
-                         AArch64::W23, AArch64::W24, AArch64::W28, AArch64::W29,
+                         AArch64::W7, AArch64::W6, AArch64::W8, AArch64::W29,
                          AArch64::W30, AArch64::WSP};
   int masterRegsD[14] = {AArch64::D0,  AArch64::D1,  AArch64::D2,  AArch64::D3,
                          AArch64::D4,  AArch64::D5,  AArch64::D19, AArch64::D20,
-                         AArch64::D23, AArch64::D24, AArch64::D28, AArch64::D29,
+                         AArch64::D7, AArch64::D6, AArch64::D8, AArch64::D29,
                          AArch64::D30, AArch64::D31};
   int masterRegsQ[14] = {AArch64::Q0,  AArch64::Q1,  AArch64::Q2,  AArch64::Q3,
                          AArch64::Q4,  AArch64::Q5,  AArch64::Q19, AArch64::Q20,
-                         AArch64::Q23, AArch64::Q24, AArch64::Q28, AArch64::Q29,
+                         AArch64::Q7, AArch64::Q6, AArch64::Q8, AArch64::Q29,
                          AArch64::Q30, AArch64::Q31};
   int masterRegsH[14] = {AArch64::H0,  AArch64::H1,  AArch64::H2,  AArch64::H3,
                          AArch64::H4,  AArch64::H5,  AArch64::H19, AArch64::H20,
-                         AArch64::H23, AArch64::H24, AArch64::H28, AArch64::H29,
+                         AArch64::H7, AArch64::H6, AArch64::H8, AArch64::H29,
                          AArch64::H30, AArch64::H31};
   int masterRegsS[14] = {AArch64::S0,  AArch64::S1,  AArch64::S2,  AArch64::S3,
                          AArch64::S4,  AArch64::S5,  AArch64::S19, AArch64::S20,
-                         AArch64::S23, AArch64::S24, AArch64::S28, AArch64::S29,
+                         AArch64::S7, AArch64::S6, AArch64::S8, AArch64::S29,
                          AArch64::S30, AArch64::S31};
   int masterRegsB[14] = {AArch64::B0,  AArch64::B1,  AArch64::B2,  AArch64::B3,
                          AArch64::B4,  AArch64::B5,  AArch64::B19, AArch64::B20,
-                         AArch64::B23, AArch64::B24, AArch64::B28, AArch64::B29,
+                         AArch64::B7, AArch64::B6, AArch64::B8, AArch64::B29,
                          AArch64::B30, AArch64::B31};
   bool ischecked[14];
 
@@ -128,19 +128,19 @@ public:
 
     // X0 shadow is X6
     case AArch64::X0:
-      return AArch64::X6;
+      return AArch64::X23;
     case AArch64::W0:
-      return AArch64::W6;
+      return AArch64::W23;
       // X1 shadow is X7
     case AArch64::X1:
-      return AArch64::X7;
+      return AArch64::X24;
     case AArch64::W1:
-      return AArch64::W7;
+      return AArch64::W24;
       // 2 shadow is X7
     case AArch64::X2:
-      return AArch64::X8;
+      return AArch64::X15;
     case AArch64::W2:
-      return AArch64::W8;
+      return AArch64::W15;
       // 3 shadow is X9
     case AArch64::X3:
       return AArch64::X9;
@@ -156,6 +156,10 @@ public:
       return AArch64::X11;
     case AArch64::W5:
       return AArch64::W11;
+    case AArch64::X6:
+      return AArch64::X22;
+    case AArch64::W6:
+      return AArch64::W22;
 
     case AArch64::X19:
       return AArch64::X12;
@@ -166,19 +170,19 @@ public:
     case AArch64::W20:
       return AArch64::W13;
       // X23 shadow is 14
-    case AArch64::X23:
+    case AArch64::X7:
       return AArch64::X14;
-    case AArch64::W23:
+    case AArch64::W7:
       return AArch64::W14;
       // X24 shadow is 15
-    case AArch64::X24:
-      return AArch64::X15;
-    case AArch64::W24:
-      return AArch64::W15;
+    // case AArch64::X24:
+    //   return AArch64::X15;
+    // case AArch64::W24:
+    //   return AArch64::W15;
       // x28 shadow is 16
-    case AArch64::X28:
+    case AArch64::X8:
       return AArch64::X16;
-    case AArch64::W28:
+    case AArch64::W8:
       return AArch64::W16;
 
       // FP shadow is 17
@@ -197,27 +201,27 @@ public:
     case AArch64::WSP:
       return AArch64::W21;
       // x25/x26/x27/x28
-    case AArch64::X26:
-      return AArch64::X25;
-    case AArch64::W26:
-      return AArch64::W25;
+    // case AArch64::X26:
+    //   return AArch64::X25;
+    // case AArch64::W26:
+    //   return AArch64::W25;
       ///////////////////////////////////////////////Floating point
 
       // X0 shadow is X6
     case AArch64::Q0:
-      return AArch64::Q6;
+      return AArch64::Q23;
     case AArch64::D0:
-      return AArch64::D6;
+      return AArch64::D23;
       // X1 shadow is X7
     case AArch64::Q1:
-      return AArch64::Q7;
+      return AArch64::Q24;
     case AArch64::D1:
-      return AArch64::D7;
+      return AArch64::D24;
       // 2 shadow is X7
     case AArch64::Q2:
-      return AArch64::Q8;
+      return AArch64::Q15;
     case AArch64::D2:
-      return AArch64::D8;
+      return AArch64::D15;
       // 3 shadow is X9
     case AArch64::Q3:
       return AArch64::Q9;
@@ -233,6 +237,10 @@ public:
       return AArch64::Q11;
     case AArch64::D5:
       return AArch64::D11;
+    case AArch64::Q6:
+      return AArch64::Q22;
+    case AArch64::D6:
+      return AArch64::D22;
 
     case AArch64::Q19:
       return AArch64::Q12;
@@ -244,9 +252,9 @@ public:
       return AArch64::D13;
 
       // Q23 shadow is 14
-    case AArch64::Q23:
+    case AArch64::Q7:
       return AArch64::Q14;
-    case AArch64::D23:
+    case AArch64::D7:
       return AArch64::D14;
       // Q24 shadow is 15
     case AArch64::Q24:
@@ -254,9 +262,9 @@ public:
     case AArch64::D24:
       return AArch64::D15;
       // Q28 shadow is 16
-    case AArch64::Q28:
+    case AArch64::Q8:
       return AArch64::Q16;
-    case AArch64::D28:
+    case AArch64::D8:
       return AArch64::D16;
 
       // Q29 shadow is 17
@@ -277,19 +285,19 @@ public:
 
       // H0 shadow is 6
     case AArch64::H0:
-      return AArch64::H6;
+      return AArch64::H23;
     case AArch64::B0:
-      return AArch64::B6;
+      return AArch64::B23;
       // X1 shadow is X7
     case AArch64::H1:
-      return AArch64::H7;
+      return AArch64::H24;
     case AArch64::B1:
-      return AArch64::B7;
+      return AArch64::B24;
       // 2 shadow is X7
     case AArch64::H2:
-      return AArch64::H8;
+      return AArch64::H15;
     case AArch64::B2:
-      return AArch64::B8;
+      return AArch64::B15;
       // 3 shadow is X9
     case AArch64::H3:
       return AArch64::H9;
@@ -305,6 +313,10 @@ public:
       return AArch64::H11;
     case AArch64::B5:
       return AArch64::B11;
+    case AArch64::H6:
+      return AArch64::H22;
+    case AArch64::B6:
+      return AArch64::H22;
 
     case AArch64::H19:
       return AArch64::H12;
@@ -316,9 +328,9 @@ public:
       return AArch64::B13;
 
       // H23 shadow is 14
-    case AArch64::H23:
+    case AArch64::H7:
       return AArch64::H14;
-    case AArch64::B23:
+    case AArch64::B7:
       return AArch64::B14;
       // H24 shadow is 15
     case AArch64::H24:
@@ -326,9 +338,9 @@ public:
     case AArch64::B24:
       return AArch64::B15;
       // H28 shadow is 16
-    case AArch64::H28:
+    case AArch64::H8:
       return AArch64::H16;
-    case AArch64::B28:
+    case AArch64::B8:
       return AArch64::B16;
 
       // H29 shadow is 17
@@ -349,13 +361,13 @@ public:
 
       // H0 shadow is 6
     case AArch64::S0:
-      return AArch64::S6;
+      return AArch64::S23;
       // X1 shadow is X7
     case AArch64::S1:
-      return AArch64::S7;
+      return AArch64::S24;
       // 2 shadow is X7
     case AArch64::S2:
-      return AArch64::S8;
+      return AArch64::S15;
       // 3 shadow is X9
     case AArch64::S3:
       return AArch64::S9;
@@ -364,18 +376,20 @@ public:
       return AArch64::S10;
     case AArch64::S5:
       return AArch64::S11;
+    case AArch64::S6:
+      return AArch64::S22;
     case AArch64::S19:
       return AArch64::S12;
     case AArch64::S20:
       return AArch64::S13;
       // H23 shadow is 14
-    case AArch64::S23:
+    case AArch64::S7:
       return AArch64::S14;
       // H24 shadow is 15
     case AArch64::S24:
       return AArch64::S15;
       // H28 shadow is 16
-    case AArch64::S28:
+    case AArch64::S8:
       return AArch64::S16;
       // H29 shadow is 17
     case AArch64::S29:

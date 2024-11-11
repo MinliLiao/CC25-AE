@@ -319,16 +319,16 @@ Reserved.set(AArch64::Q3);
 //moslem for reserving registers
 if (ReserveRegisters){
 
-Reserved.set(AArch64::X6);
-Reserved.set(AArch64::W6);
-Reserved.set(AArch64::B6);
-Reserved.set(AArch64::S6);
-Reserved.set(AArch64::H6);
-Reserved.set(AArch64::D6);
-Reserved.set(AArch64::Q6);
+// Reserved.set(AArch64::X6);
+// Reserved.set(AArch64::W6);
+// Reserved.set(AArch64::B6);
+// Reserved.set(AArch64::S6);
+// Reserved.set(AArch64::H6);
+// Reserved.set(AArch64::D6);
+// Reserved.set(AArch64::Q6);
 
-    Reserved.set(AArch64::X7);  //X7
-    Reserved.set(AArch64::X8); // X0
+    // Reserved.set(AArch64::X7);  //X7
+    // Reserved.set(AArch64::X8); // X0
     Reserved.set(AArch64::X9); //X1
     Reserved.set(AArch64::X10); //X2
     Reserved.set(AArch64::X11);  //X3
@@ -341,13 +341,15 @@ Reserved.set(AArch64::Q6);
     Reserved.set(AArch64::X18);   //CF
     Reserved.set(AArch64::X21); //CF
     Reserved.set(AArch64::X22);  //CF
+    Reserved.set(AArch64::X23); 
+    Reserved.set(AArch64::X24); 
     Reserved.set(AArch64::X25);  //23
     Reserved.set(AArch64::X26);  //24
     Reserved.set(AArch64::X27); //FP
     Reserved.set(AArch64::X28);  //SP
 //////////////////////////////////////////////////////////////
-    Reserved.set(AArch64::W7);  
-    Reserved.set(AArch64::W8);
+    // Reserved.set(AArch64::W7);  
+    // Reserved.set(AArch64::W8);
     Reserved.set(AArch64::W9);
     Reserved.set(AArch64::W10);
     Reserved.set(AArch64::W11);
@@ -360,13 +362,15 @@ Reserved.set(AArch64::Q6);
     Reserved.set(AArch64::W18);
     Reserved.set(AArch64::W21);
     Reserved.set(AArch64::W22);
+    Reserved.set(AArch64::W23); 
+    Reserved.set(AArch64::W24); 
     Reserved.set(AArch64::W25);
     Reserved.set(AArch64::W26);
     Reserved.set(AArch64::W27);
     Reserved.set(AArch64::W28);
 /////////////////////////////////////////////////////////////fLOAT
-    Reserved.set(AArch64::B7);
-    Reserved.set(AArch64::B8);
+    // Reserved.set(AArch64::B7);
+    // Reserved.set(AArch64::B8);
     Reserved.set(AArch64::B9);
     Reserved.set(AArch64::B10);
     Reserved.set(AArch64::B11);
@@ -381,6 +385,8 @@ Reserved.set(AArch64::Q6);
     Reserved.set(AArch64::B20);
     Reserved.set(AArch64::B21);
     Reserved.set(AArch64::B22);
+    Reserved.set(AArch64::B23); 
+    Reserved.set(AArch64::B24); 
     Reserved.set(AArch64::B25);
     Reserved.set(AArch64::B26);
     Reserved.set(AArch64::B27);
@@ -388,8 +394,8 @@ Reserved.set(AArch64::Q6);
 
 
 
-    Reserved.set(AArch64::H7);
-    Reserved.set(AArch64::H8);
+    // Reserved.set(AArch64::H7);
+    // Reserved.set(AArch64::H8);
     Reserved.set(AArch64::H9);
     Reserved.set(AArch64::H10);
     Reserved.set(AArch64::H11);
@@ -404,13 +410,15 @@ Reserved.set(AArch64::Q6);
     Reserved.set(AArch64::H20);
     Reserved.set(AArch64::H21);
     Reserved.set(AArch64::H22);
+    Reserved.set(AArch64::H23); 
+    Reserved.set(AArch64::H24); 
     Reserved.set(AArch64::H25);
     Reserved.set(AArch64::H26);
     Reserved.set(AArch64::H27);
     Reserved.set(AArch64::H28);
 
-    Reserved.set(AArch64::S7);
-    Reserved.set(AArch64::S8);
+    // Reserved.set(AArch64::S7);
+    // Reserved.set(AArch64::S8);
     Reserved.set(AArch64::S9);
     Reserved.set(AArch64::S10);
     Reserved.set(AArch64::S11);
@@ -425,6 +433,8 @@ Reserved.set(AArch64::Q6);
     Reserved.set(AArch64::S20);
     Reserved.set(AArch64::S21);
     Reserved.set(AArch64::S22);
+    Reserved.set(AArch64::S23); 
+    Reserved.set(AArch64::S24); 
     Reserved.set(AArch64::S25);
     Reserved.set(AArch64::S26);
     Reserved.set(AArch64::S27);
@@ -432,8 +442,8 @@ Reserved.set(AArch64::Q6);
   
 
 
-    Reserved.set(AArch64::D7);
-    Reserved.set(AArch64::D8);
+    // Reserved.set(AArch64::D7);
+    // Reserved.set(AArch64::D8);
     Reserved.set(AArch64::D9);
     Reserved.set(AArch64::D10);
     Reserved.set(AArch64::D11);
@@ -448,13 +458,15 @@ Reserved.set(AArch64::Q6);
     Reserved.set(AArch64::D20);
     Reserved.set(AArch64::D21);
     Reserved.set(AArch64::D22);
+    Reserved.set(AArch64::D23); 
+    Reserved.set(AArch64::D24); 
     Reserved.set(AArch64::D25);
     Reserved.set(AArch64::D26);
     Reserved.set(AArch64::D27);
     Reserved.set(AArch64::D28);
 
-    Reserved.set(AArch64::Q7);
-    Reserved.set(AArch64::Q8);
+    // Reserved.set(AArch64::Q7);
+    // Reserved.set(AArch64::Q8);
     Reserved.set(AArch64::Q9);
     Reserved.set(AArch64::Q10);
     Reserved.set(AArch64::Q11);
@@ -469,6 +481,8 @@ Reserved.set(AArch64::Q6);
     Reserved.set(AArch64::Q20);
     Reserved.set(AArch64::Q21);
     Reserved.set(AArch64::Q22);
+    Reserved.set(AArch64::Q23); 
+    Reserved.set(AArch64::Q24); 
     Reserved.set(AArch64::Q25);
     Reserved.set(AArch64::Q26);
     Reserved.set(AArch64::Q27);
@@ -506,10 +520,10 @@ bool AArch64RegisterInfo::isReservedReg(const MachineFunction &MF,
   case AArch64::W19:
   case AArch64::X19:
     return hasBasePointer(MF);
-  case AArch64::X6:
-  case AArch64::W6:
-case AArch64::X7: //X7
-case AArch64::X8: // X0
+  // case AArch64::X6:
+  // case AArch64::W6:
+// case AArch64::X7: //X7
+// case AArch64::X8: // X0
 case AArch64::X9: //X1
 case AArch64::X10: //X2
 case AArch64::X11: //X3
@@ -522,12 +536,14 @@ case AArch64::X17:   //LR
 
 case AArch64::X21: //CF
 case AArch64::X22: //CF
+case AArch64::X23:
+case AArch64::X24:
 case AArch64::X25: //23
 case AArch64::X26: //24
 case AArch64::X27: //FP
 case AArch64::X28: //FP
-case AArch64::W7: //X7
-case AArch64::W8: // X0
+// case AArch64::W7: //X7
+// case AArch64::W8: // X0
 case AArch64::W9: //X1
 case AArch64::W10: //X2
 case AArch64::W11: //X3
@@ -539,6 +555,8 @@ case AArch64::W16: //X19
 case AArch64::W17:   //LR
 case AArch64::W21: //CF
 case AArch64::W22: //CF
+case AArch64::W23:
+case AArch64::W24:
 case AArch64::W25: //23
 case AArch64::W26: //24
 case AArch64::W27: //FP
