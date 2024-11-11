@@ -861,6 +861,14 @@ public:
                     .addImm(0);
             MachineBasicBlock::iterator pos = MBB->insertAfter(I, copyInst);
           }
+          for (int i = 0; i < ZDCmasterRegs.numMasterRegs; i++) {
+            masterReg = ZDCmasterRegs.masterRegsD[i];
+            slaveReg = getTheSlave(masterReg);
+            MachineInstrBuilder copyInst =
+                BuildMI(MF, DL3, TII->get(AArch64::FMOVDr), slaveReg)
+                    .addReg(masterReg);
+            MachineBasicBlock::iterator pos = MBB->insertAfter(I, copyInst);
+          }
         }
       }
     }
