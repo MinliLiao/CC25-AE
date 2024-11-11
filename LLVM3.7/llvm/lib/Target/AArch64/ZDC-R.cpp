@@ -642,7 +642,7 @@ public:
         if (I->mayStore()) {
           /*insert checking load instruction*/
           MachineInstr *loadInst = MF.CloneMachineInstr(I);
-          for (int opcount = I->NumOperands - 2; opcount < I->getNumOperands();
+          for (int opcount = I->getNumOperands() - 2; opcount < I->getNumOperands();
                opcount++) {
             if (I->getOperand(opcount).isReg()) {
               loadInst->getOperand(opcount).setReg(
