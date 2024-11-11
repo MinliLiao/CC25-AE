@@ -445,7 +445,14 @@ public:
     DebugLoc DL3 = I->getDebugLoc();
     MachineInstr *copyInst = NULL;
     MachineBasicBlock::iterator t;
-    if (MF.getName() == "main")
+    if (MF.getName() == "main" 
+        || MF.getName() == "_Z9bs_threadPv" // For PARSEC blackscholes
+        || MF.getName() == "_ZNSt3__113basic_filebufIcNS_11char_traitsIcEEE9underflowEv" || MF.getName() == "_Z15AdvanceFramesMTPv" || MF.getName() == "_ZNSt3__113basic_filebufIcNS_11char_traitsIcEEE8overflowEi" // For PARSEC fluidanimate
+        || MF.getName() == "_Z14localSearchSubPv" // For PARSEC streamcluster
+        || MF.getName() == "_Z6workerPv" // For PARSEC swaptions
+        || MF.getName() == "Fragment" || MF.getName() == "FragmentRefine" || MF.getName() == "Deduplicate" || MF.getName() == "Compress" || MF.getName() == "Reorder" // For PARSEC dedup
+        // || MF.getName() == "_ZNK5cHead4findEPKc" // For SPEC06 omnetpp
+      )
       for (int i = 0; i < ZDCmasterRegs.numMasterRegs; i++) {
         masterReg = ZDCmasterRegs.masterRegs[i];
         slaveReg = getTheSlave(masterReg);
@@ -809,7 +816,10 @@ public:
   }
   bool runOnMachineFunction(MachineFunction &MF) {
 
-    if (nZDCisEnable) {
+    if (nZDCisEnable
+        && !(MF.getName().startswith("_GLOBAL__sub_I_") && MF.getName().endswith(".cc")) && !(MF.getName() == "_ZN16ExecuteOnStartupC2EPFvvE") && !(MF.getName() == "_ZN12sEnumBuilderC2EPKcz") && !(MF.getName() == "_ZNK5cHead4findEPKc") && !(MF.getName() == "_ZN7cObjectnwEm") && !(MF.getName() == "_Znwm") && !(MF.getName() == "_ZN5cEnumC2EPKci") && !(MF.getName() == "_ZN7cObjectC2EPKc") && !(MF.getName() == "_Z10opp_strdupPKc") && !(MF.getName() == "_ZN7cObject8setOwnerEPS_") && !(MF.getName() == "_ZN5cEnum6insertEiPKc") && !(MF.getName() == "_Z10opp_strcmpPKcS0_") && !(MF.getName() == "_ZN5cHeadC2EPKc") && !(MF.getName() == "_ZN11cSimulationC2EPKc") && !(MF.getName() == "_ZN10cCoroutineC2Ev") && !(MF.getName() == "_ZN12cMessageHeapC2EPKci") && !(MF.getName() == "_ZdlPv") // For SPEC06 omnetpp
+        && !(MF.getName() == "compare_pic_by_pic_num_desc") // For SPEC06 h264ref
+    ) {
       duplicateInstructionsZDC(MF);
       MasterRegsToSlaveRegsCall(MF);
       MachineBasicBlock *errorBB = createErrorDetectionBB(MF);
