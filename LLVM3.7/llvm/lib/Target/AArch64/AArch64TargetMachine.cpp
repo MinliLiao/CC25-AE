@@ -322,11 +322,11 @@ void AArch64PassConfig::addPreSched2() {
 void AArch64PassConfig::addPreEmitPass() {
   if (EnableA53Fix835769)
     addPass(createAArch64A53Fix835769());
+  //nZDC pass
+  addPass(createZDCR());
   // Relax conditional branch instructions if they're otherwise out of
   // range of their destination.
   addPass(createAArch64BranchRelaxation());
-//nZDC pass
-addPass(createZDCR());
   if (TM->getOptLevel() != CodeGenOpt::None && EnableCollectLOH &&
       TM->getTargetTriple().isOSBinFormatMachO())
     addPass(createAArch64CollectLOHPass());
