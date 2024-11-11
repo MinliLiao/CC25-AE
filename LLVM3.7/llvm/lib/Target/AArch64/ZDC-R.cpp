@@ -642,7 +642,7 @@ public:
         if (I->mayStore()) {
           /*insert checking load instruction*/
           MachineInstr *loadInst = MF.CloneMachineInstr(I);
-          for (int opcount = I->getNumOperands() - 2; opcount < I->getNumOperands();
+          for (int opcount = getStartOprandId(I->getOpcode(), I->getNumOperands()); opcount < getEndOprandId(I->getOpcode(), I->getNumOperands());
                opcount++) {
             if (I->getOperand(opcount).isReg()) {
               loadInst->getOperand(opcount).setReg(
@@ -923,6 +923,56 @@ public:
       return AArch64::LDRQpre;
     default:
       return stOpcode;
+    }
+  }
+
+  int getStartOprandId(int stOpcode, int numOperands) {
+    // See AArch64GenMCCodeEmitter.inc
+    switch(stOpcode) {
+      case AArch64::STRBBroX:
+      case AArch64::STRWui:
+      case AArch64::STURWi:
+        assert(numOperands > 1);
+        return 1;
+      case AArch64::STRBBpost:
+      case AArch64::STRBpost:
+      case AArch64::STRHHpost:
+      case AArch64::STRHpost:
+      case AArch64::STRWpost:
+      case AArch64::STRXpost:
+      case AArch64::STRBBpre:
+      case AArch64::STRBpre:
+      case AArch64::STRHHpre:
+      case AArch64::STRHpre:
+      case AArch64::STRWpre:
+      case AArch64::STRXpre: 
+        assert(numOperands > 2);
+        return 2;
+      default:
+        return numOperands - 2;
+    }
+  }
+
+  int getEndOprandId(int stOpcode, int numOperands) {
+    // See AArch64GenMCCodeEmitter.inc
+    switch(stOpcode) {
+      case AArch64::STRBBroX:
+      case AArch64::STRBBpost:
+      case AArch64::STRBpost:
+      case AArch64::STRHHpost:
+      case AArch64::STRHpost:
+      case AArch64::STRWpost:
+      case AArch64::STRXpost:
+      case AArch64::STRBBpre:
+      case AArch64::STRBpre:
+      case AArch64::STRHHpre:
+      case AArch64::STRHpre:
+      case AArch64::STRWpre:
+      case AArch64::STRXpre: 
+        assert(numOperands >= 3);
+        return 3;
+      default:
+        return numOperands;
     }
   }
 
