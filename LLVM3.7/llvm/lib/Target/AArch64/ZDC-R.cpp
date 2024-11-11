@@ -103,6 +103,9 @@ struct ZDCR : public MachineFunctionPass {
   // const TargetInstrInfo *TII;
 public:
   static char ID;
+  const char *getPassName() const override {
+      return "nZDC";
+  }
   // Pass identification, replacement for typeid
   // bool runOnMachineFunction(MachineFunction &F);
   //**********************************************************************
