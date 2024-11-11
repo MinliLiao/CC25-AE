@@ -417,7 +417,9 @@ public:
                                              E = MBB->instr_end();
            I != E; ++I) {
         if (!(I->isBranch()) && !(I->mayStore()) && !(I->isCall()) &&
-            !(I->getOpcode() == AArch64::RET) && !(I->isCompare())) {
+            !(I->getOpcode() == AArch64::RET) && !(I->isCompare())
+            && !(I->getOpcode() == AArch64::EH_LABEL)
+            ) {
           bool duplicatable = true;
           MachineInstr *slaveinst = MF.CloneMachineInstr(I);
           for (int opcount = 0; opcount < I->getNumOperands(); opcount++) {
