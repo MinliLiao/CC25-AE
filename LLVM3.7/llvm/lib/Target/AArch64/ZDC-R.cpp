@@ -675,6 +675,19 @@ public:
                           .addReg(slaveReg)
                           .addImm(0);
                   if (masterReg != AArch64::WZR && masterReg != AArch64::XZR) {
+                    if (revertMasterValue(loadInst->getOpcode(), opnum, getRegClass(slaveReg))) {
+                      if (getRegClass(slaveReg) == INT32RegClassID || getRegClass(slaveReg) == INT64RegClassID ) {
+                        int fullReg = get64MasterReg(masterReg);
+                        MachineInstrBuilder revInst =
+                          BuildMI(MF, DL3, TII->get(AArch64::SUBXrs), fullReg)
+                              .addReg(getTheSlave(fullReg))
+                              .addReg(AArch64::XZR)
+                              .addImm(0);
+                        loadPos = MBB->insertAfter(loadPos, revInst);
+                      } else {
+                        assert(false && "FP reg not handled."); 
+                      }
+                    }
                     MachineBasicBlock::iterator cmpPOS =
                         MBB->insertAfter(loadPos, copyInst);
                     copyInst =
@@ -926,6 +939,72 @@ public:
     }
   }
 
+  bool revertMasterValue(int ldOpcode, int opcount, regType rtype) {
+    unsigned rsize = 0;
+    switch (rtype) {
+      case FPR8RegClassID:
+        rsize = 8; break;
+      case FPR16RegClassID:
+        rsize = 16; break;
+      case INT32RegClassID:
+      case FPR32RegClassID:
+        rsize = 32; break;
+      case INT64RegClassID:
+      case FPR64RegClassID:
+        rsize = 64; break;
+      case FPR128RegClassID:
+        rsize = 128; break;
+    }
+    switch(ldOpcode) {
+      case AArch64::LDPWi:
+        // upper 32-bit of X register is zeroed with load to W registers
+        return opcount == 0 || opcount == 1;
+      case AArch64::LDPWpost:
+      case AArch64::LDPWpre:
+        // upper 32-bit of X register is zeroed with load to W registers
+        return opcount == 1 || opcount == 2;
+      case AArch64::LDPDpost:
+      case AArch64::LDPDpre:
+        return (opcount == 1 || opcount == 2) && (rsize != 64);
+      case AArch64::LDPSpost:
+      case AArch64::LDPSpre:
+        return (opcount == 1 || opcount == 2) && (rsize != 32);
+      case AArch64::LDRWui:
+      case AArch64::LDURWi:
+        // upper 32-bit of X register is zeroed with load to W registers
+        return opcount == 0;
+      case AArch64::LDRDui:
+      case AArch64::LDURDi:
+        return (opcount == 0) && (rsize != 64);
+      case AArch64::LDRBBroX:
+      case AArch64::LDRBBui:
+      case AArch64::LDURBBi:
+        return (opcount == 0) && (rsize != 8);
+      case AArch64::LDRWpost:
+      case AArch64::LDRWpre:
+        // upper 32-bit of X register is zeroed with load to W registers
+        return opcount == 1;
+      case AArch64::LDRDpost:
+      case AArch64::LDRDpre:
+        return (opcount == 1) && (rsize != 64);
+      case AArch64::LDRSpost:
+      case AArch64::LDRSpre:
+        return (opcount == 1) && (rsize != 32);
+      case AArch64::LDRHHpost:
+      case AArch64::LDRHHpre:
+      case AArch64::LDRHpost:
+      case AArch64::LDRHpre:
+        return (opcount == 1) && (rsize != 16);
+      case AArch64::LDRBBpost:
+      case AArch64::LDRBBpre:
+      case AArch64::LDRBpost:
+      case AArch64::LDRBpre:
+        return (opcount == 1) && (rsize != 8);
+      default:
+        return false;
+    }
+  }
+
   int getStartOprandId(int stOpcode, int numOperands) {
     // See AArch64GenMCCodeEmitter.inc
     switch(stOpcode) {
@@ -974,6 +1053,14 @@ public:
       default:
         return numOperands;
     }
+  }
+
+  int get64MasterReg(unsigned Reg) {
+    for (int i = 0; i < ZDCmasterRegs.numMasterRegs; i++) {
+      if (ZDCmasterRegs.masterRegsW[i] == Reg)
+        return ZDCmasterRegs.masterRegs[i];
+    }
+    return Reg;
   }
 
   int getTheSlave(unsigned Reg, bool test) {
