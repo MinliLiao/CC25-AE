@@ -1,0 +1,63 @@
+# ************ Optimization flags ************
+export CCBASE=$(LLVMDIR)/bin/clang
+export CXXBASE=$(LLVMDIR)/bin/clang++
+export OPT=$(LLVMDIR)/bin/opt
+export LINK=$(LLVMDIR)/bin/llvm-link
+export LLC=$(LLVMDIR)/bin/llc
+export CCFINISH=$(LLVMDIR)/bin/clang
+export CXXFINISH=$(LLVMDIR)/bin/clang++
+
+######
+FLAGS = -O3 -march=aarch64
+CFLAGS = ${EXTRACFLAGS} -O3 -fpermissive -fno-exceptions -std=c++1y -pthread -static -Wall -S -emit-llvm -Wno-int-conversion
+INCLUDES = -I./ -I/usr/include/aarch64-linux-gnu/
+LFLAGS = -O3
+
+# TODO: Change .c to .cpp for C++ sources
+SOURCES := streamcluster.cpp parsec_barrier.cpp
+# TODO: Change ${BENCHNAME} to the target benchmark
+EXE     := ${BINDIR}/${BENCHNAME}_bin
+LLVMIR  := $(patsubst %.cpp,$(BINDIR)/%.ll,$(SOURCES))
+NORMIR  := $(patsubst %.cpp,$(BINDIR)/%.norm.ll,$(SOURCES))
+PARIR   := $(patsubst %.cpp,$(BINDIR)/%.par.ll,$(SOURCES))
+OBJ     := $(patsubst %.cpp,$(BINDIR)/%.o,$(SOURCES))
+ASM     := $(patsubst %.cpp,$(BINDIR)/%.s,$(SOURCES))
+FIXASM  := $(patsubst %.cpp,$(BINDIR)/%.fix.s,$(SOURCES))
+
+.PHONY: all check norm nzdc
+all: norm nzdc
+norm: FLAGS = -O3 -march=aarch64
+nzdc: FLAGS = -O3 -march=aarch64 -reserveRegs=true -enable-nZDC=true
+norm: FIX = cat
+nzdc: FIX = python ${BINDIR}/../../../FixAssembly.py --inFilename
+norm: check $(EXE)
+nzdc: check $(EXE)
+check:
+	mkdir -p ${BINDIR}
+	@[ "${LLVMDIR}" ] || { echo "Error: LLVMDIR is not set"; exit 1; }
+
+$(EXE): ${BINDIR}/${BENCHNAME}.par.o
+	$(CXXFINISH) $(LFLAGS) $< $(LLIB) -o $@ 
+${BINDIR}/${BENCHNAME}.par.o: ${BINDIR}/${BENCHNAME}.par_fix.s
+	$(CXXFINISH) -c $< -o $@
+${BINDIR}/${BENCHNAME}.par_fix.s: ${BINDIR}/${BENCHNAME}.par.s
+	$(FIX) $< > $@
+${BINDIR}/${BENCHNAME}.par.s: ${BINDIR}/${BENCHNAME}.par.ll
+	$(LLC) $(FLAGS) $< -o $@
+${BINDIR}/${BENCHNAME}.par.ll: ${BINDIR}/${BENCHNAME}.norm.ll
+	$(OPT) -S $< -o $@
+${BINDIR}/${BENCHNAME}.norm.ll: $(NORMIR)
+	$(LINK) $^ -S -o $@
+${BINDIR}/%.norm.ll: ${BINDIR}/%.ll
+	$(OPT) $< -S -o $@
+${BINDIR}/%.s: ${BINDIR}/%.ll
+	$(LLC) $(FLAGS) $< -o $@
+${BINDIR}/%.ll: %.c
+	$(CCBASE) $(CFLAGS) $(INCLUDES) $< -o $@
+${BINDIR}/%.ll: %.cpp
+	$(CXXBASE) $(CFLAGS) $(INCLUDES) $< -o $@
+
+.PHONY: clean
+clean:
+	rm -f ${BINDIR}/${BENCHNAME}.par.ll ${BINDIR}/${BENCHNAME}.norm.ll ${BINDIR}/${BENCHNAME}.par.s ${BINDIR}/${BENCHNAME}.par_fix.s ${BINDIR}/${BENCHNAME}.par.o $(LLVMIR) $(NORMIR) $(PARIR) $(OBJ) $(FIXASM) $(ASM) $(EXE)
+
