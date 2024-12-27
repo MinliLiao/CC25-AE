@@ -1,0 +1,61 @@
+# ************ Optimization flags ************
+export CCBASE=$(LLVMDIR)/bin/clang
+export CXXBASE=$(LLVMDIR)/bin/clang++
+export OPT=$(LLVMDIR)/bin/opt
+export LINK=$(LLVMDIR)/bin/llvm-link
+export LLC=$(LLVMDIR)/bin/llc
+export CCFINISH=gcc
+export CXXFINISH=g++
+
+######
+FLAGS = -O2 -march=aarch64
+CFLAGS = -DSPEC_CPU -DNDEBUG ${EXTRACFLAGS} -DSPEC_CPU_LP64 -O2 -static -Wall -S -emit-llvm -Wno-int-conversion
+INCLUDES = -I./ -I/usr/include/aarch64-linux-gnu/
+LFLAGS = -O2 -static -DSPEC_CPU_LP64 -DSPEC_CPU_LINUX
+
+# TODO: Change .c to .cpp for C++ sources
+SOURCES := $(shell ls *.c)
+# TODO: Change ${BENCHNAME} to the target benchmark
+EXE     := ${BINDIR}/${BENCHNAME}_bin
+LLVMIR  := $(patsubst %.c,$(BINDIR)/%.ll,$(SOURCES))
+NORMIR  := $(patsubst %.c,$(BINDIR)/%.norm.ll,$(SOURCES))
+PARIR   := $(patsubst %.c,$(BINDIR)/%.par.ll,$(SOURCES))
+OBJ     := $(patsubst %.c,$(BINDIR)/%.o,$(SOURCES))
+ASM     := $(patsubst %.c,$(BINDIR)/%.s,$(SOURCES))
+FIXASM  := $(patsubst %.c,$(BINDIR)/%.fix.s,$(SOURCES))
+
+.PHONY: all check norm nzdc
+all: norm nzdc
+norm: FLAGS = -O2 -march=aarch64
+nzdc: FLAGS = -O2 -march=aarch64 -reserveRegs=true -enable-nZDC=true
+norm: FIX = cat
+nzdc: FIX = python ${BINDIR}/../../../FixAssembly.py --inFilename
+norm: check $(EXE)
+nzdc: check $(EXE)
+check:
+	mkdir -p ${BINDIR}
+	@[ "${LLVMDIR}" ] || { echo "Error: LLVMDIR is not set"; exit 1; }
+
+$(EXE): ${BINDIR}/${BENCHNAME}.par.o
+	$(CCFINISH) $(LFLAGS) $< $(LLIB) -o $@
+${BINDIR}/${BENCHNAME}.par.o: ${BINDIR}/${BENCHNAME}.par_fix.s
+	$(CCFINISH) -c $< -o $@
+${BINDIR}/${BENCHNAME}.par_fix.s: ${BINDIR}/${BENCHNAME}.par.s
+	$(FIX) $< > $@
+${BINDIR}/${BENCHNAME}.par.s: ${BINDIR}/${BENCHNAME}.par.ll
+	$(LLC) $(FLAGS) $< -o $@
+${BINDIR}/${BENCHNAME}.par.ll: ${BINDIR}/${BENCHNAME}.norm.ll
+	$(OPT) -S $< -o $@
+${BINDIR}/${BENCHNAME}.norm.ll: $(NORMIR)
+	$(LINK) $^ -S -o $@
+${BINDIR}/%.norm.ll: ${BINDIR}/%.ll
+	$(OPT) $< -S -o $@
+${BINDIR}/%.ll: %.c
+	$(CCBASE) $(CFLAGS) $(INCLUDES) $< -o $@
+${BINDIR}/%.ll: %.cpp
+	$(CXXBASE) $(CFLAGS) $(INCLUDES) $< -o $@
+
+.PHONY: clean
+clean:
+	rm -f ${BINDIR}/${BENCHNAME}.par.ll ${BINDIR}/${BENCHNAME}.norm.ll ${BINDIR}/${BENCHNAME}.par.s ${BINDIR}/${BENCHNAME}.par_fix.s ${BINDIR}/${BENCHNAME}.par.o $(LLVMIR) $(NORMIR) $(PARIR) $(OBJ) $(FIXASM) $(ASM) $(EXE)
+
