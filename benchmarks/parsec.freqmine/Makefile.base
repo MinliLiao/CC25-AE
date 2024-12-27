@@ -50,8 +50,6 @@ ${BINDIR}/${BENCHNAME}.norm.ll: $(NORMIR)
 	$(LINK) $^ -S -o $@
 ${BINDIR}/%.norm.ll: ${BINDIR}/%.ll
 	$(OPT) $< -S -o $@
-${BINDIR}/%.s: ${BINDIR}/%.ll
-	$(LLC) $(FLAGS) $< -o $@
 ${BINDIR}/%.ll: %.c
 	$(CXXBASE) $(CFLAGS) $(INCLUDES) $< -o $@
 ${BINDIR}/%.ll: %.cpp
