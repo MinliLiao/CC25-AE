@@ -1,5 +1,5 @@
 # CC25 Artifact Evaluation for Extended nZDC Fault Tolerance
-This is the artifact for the artifact evaluation of CC 2025, for the paper "A Deep Technical Review of nZDC Fault Tolerance" by M. Liao, S. Ainsworth, L. Mukhanov and T. Jones. This artifact includes the nZDC-Compiler implementation (based on LLVM, original version at https://github.com/MPSLab-ASU/nZDC-Compiler) with our fix added as described in our CC 2025 paper and the scripts to download the benchmarks (where possible), compile them with vanilla LLVM and nZDC-Compiler with our fixes, and run them.
+This is the artifact for the artifact evaluation of CC 2025, for the paper "A Deep Technical Review of nZDC Fault Tolerance" by M. Liao, S. Ainsworth, L. Mukhanov and T. Jones. This artifact includes the nZDC-Compiler implementation (based on LLVM, original version at https://github.com/MPSLab-ASU/nZDC-Compiler) with our fixes added as described in our CC 2025 paper and the scripts to download the benchmarks (where possible), compile them with vanilla LLVM and nZDC-Compiler with our fixes, and run them.
 
 ## Hardware requirements
 An AArch64 machine (we used Neoverse-N1) with sudo access (to install dependencies and mount images), >2GB RAM for SPECint 2006 benchmarks, >12GB storage for PARSEC benchmarks.
