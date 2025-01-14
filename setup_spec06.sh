@@ -6,14 +6,12 @@ BENCH_DIR=${SCRIPT_DIR}/benchmarks
 
 # Get SPEC06
 cd ${SCRIPT_DIR}
-# mkdir specmnt
-# mkdir ${SPEC06_DIR}
-# sudo mount -o loop *.iso specmnt
-# cd ${SPEC06_DIR}
-# tar -xJvf ${SCRIPT_DIR}/specmnt/install_archives/cpu2006.tar.xz
-# cd ${SCRIPT_DIR}
-# sudo umount specmnt
-# rm -r specmnt
+mkdir specmnt
+ mkdir ${SPEC06_DIR}
+ sudo mount -o loop *.iso specmnt
+ cp -a specmnt/ spec06/
+ sudo umount specmnt
+ rm -r specmnt
 
 # Setup source and run folders
 cd ${BENCH_DIR}

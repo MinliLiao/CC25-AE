@@ -23,10 +23,12 @@ To get the PARSEC benchmarks and set up the directories to build and run them:
 bash setup_parsec.sh
 ```
 
-To work with SPEC06 benchmarks, put your image of the SPEC CPU2006 benchmarks in the root directory of this artifact, and then run
+To work with SPEC06 benchmarks, **put your image of the SPEC CPU2006 benchmarks in the root directory of this artifact with filename ending in .iso**, and then run
 ```
 bash setup_spec06.sh
 ```
+
+Type "yes" if it asks.
 
 ## Compiling and running
 From the root directory of this artifact, to compile the PARSEC benchmarks with vanilla LLVM and nZDC-Compiler with our fixes and then run the two binaries to get timing
@@ -59,4 +61,6 @@ All benchmarks except 403.gcc, 471.omnetpp and 483.xalancbmk should be able to c
 Collected results should show slowdown with trend similar to figure 8 in our paper, though the numbers are unlikely to match exactly due to experimental variance.
 
 ## Modifications and Extensions
+
+Our changes described in our paper can be seen in the commit logs, with each relevant commit performed on Nov 11 2024. As with the original nZDC, these are mostly in the file *nZDC-Compiler/LLVM3.7/llvm/lib/Target/AArch64/ZDC-R.cpp*, which was added by the authors of nZDC to their custom LLVM build to implement their pass https://github.com/MPSLab-ASU/nZDC-Compiler. The remaining unimplemented suggestions we give in our paper would also mostly be extensions to this file.
 
