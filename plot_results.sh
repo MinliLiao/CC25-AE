@@ -7,4 +7,4 @@ PARSEC_BENCHS=(parsec.blackscholes parsec.dedup parsec.fluidanimate parsec.freqm
 
 ./collect_results.sh > COLLECTED_results.txt
 
-
+gnuplot ./plot_results.gp
