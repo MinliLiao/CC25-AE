@@ -28,8 +28,6 @@ To work with SPEC06 benchmarks, **put your image of the SPEC CPU2006 benchmarks 
 bash setup_spec06.sh
 ```
 
-Type "yes" if it asks.
-
 ## Compiling and running
 From the root directory of this artifact, to compile the PARSEC benchmarks with vanilla LLVM and nZDC-Compiler with our fixes and then run the two binaries to get timing
 ```
