@@ -56,9 +56,18 @@ bash collect_results.sh
 ```
 The produced result consists of the benchmark name, the execution time of the benchmark compiled with vanilla LLVM, the execution time of the benchmark compiled with nZDC-Compiler with our fix, and the slowdown of execution time with nZDC compared to vanilla.
 
+To plot slowdowns and to compare against our recorded results, run
+
+```
+bash plot_results.sh 
+```
+
+This will produce an output graph, results.eps.
+
 ## Expectations
-All benchmarks except 403.gcc, 471.omnetpp and 483.xalancbmk should be able to compile and run to completion.
-Collected results should show slowdown with trend similar to figure 8 in our paper, though the numbers are unlikely to match exactly due to experimental variance.
+All benchmarks except 403.gcc, 471.omnetpp and 483.xalancbmk should be able to compile and run to completion. 445.gobmk will run to completion but produce an error output on-screen.
+
+Collected results should show slowdown with trend similar to figure 8 in our paper, though the numbers are unlikely to match exactly due to experimental variance and especially if the experiments are run on a different system microarchitecture. We give prerecorded results in the same form as *collect_results.sh* gives in EXAMPLE_results.txt, and the output of *plot_results.sh* produces *results.eps* which compares our prerecorded slowdowns against the ones from a rerun.
 
 ## Modifications and Extensions
 

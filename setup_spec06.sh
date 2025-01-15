@@ -6,10 +6,11 @@ BENCH_DIR=${SCRIPT_DIR}/benchmarks
 
 # Get SPEC06
 cd ${SCRIPT_DIR}
-mkdir specmnt
+ mkdir specmnt
  mkdir ${SPEC06_DIR}
  sudo mount -o loop *.iso specmnt
- cp -a specmnt/ spec06/
+ cp -a specmnt/* spec06/
+ chmod u+w -R spec06
  sudo umount specmnt
  rm -r specmnt
 
